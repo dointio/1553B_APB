@@ -1,0 +1,10 @@
+{
+    "verilog.linting.linter": "verilator",
+    "verilog.linting.verilator.arguments": "--timing",
+    "verilog.linting.verilator.includePath": [
+        "/home/xpzh/MyPrjs/1553B_me/vsrc",
+        "/home/xpzh/MyPrjs/1553B_me/vsrc/fifo",
+        "/home/xpzh/MyPrjs/1553B_me/vsrc/axis_fifo",
+        "/home/xpzh/MyPrjs/1553B_me/vsrc/axis_uart"
+    ],
+}
