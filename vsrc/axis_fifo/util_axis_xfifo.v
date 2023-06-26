@@ -102,7 +102,7 @@ module util_axis_xfifo #(
   assign s_axis_concat_data[(USER_WIDTH-1+c_TUSER_OFFSET):c_TUSER_OFFSET]     = s_axis_tuser;
   assign s_axis_concat_data[c_TLAST_OFFSET]                                   = s_axis_tlast;
 
-  util_fifo #(
+    util_fifo #(
       .FIFO_DEPTH    (c_FIFO_DEPTH),
       .BYTE_WIDTH    (c_FIFO_WIDTH),
       .COUNT_WIDTH   (COUNT_WIDTH),

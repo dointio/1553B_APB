@@ -8,6 +8,7 @@ module axis_1553_encoder #(
 (
     input aclk,
     input arstn,
+    input parity_set, //0:ou, 1:ji
     input   [15:0]  s_axis_tdata,
     input           s_axis_tvalid,
     input   [7:0]   s_axis_tuser,
@@ -128,7 +129,7 @@ module axis_1553_encoder #(
           parity_gen: begin
             state <= process_data;
             
-            parity_bit <= ^r_data;
+            parity_bit <= (^r_data) ^ parity_set;
               
           end
           process_data: begin

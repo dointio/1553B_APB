@@ -9,13 +9,14 @@ module axis_1553_decoder #(
     parameter sample_select = 0
   ) 
   (
-        input aclk,
-    input arstn,
-        output  reg[15:0] m_axis_tdata,
-    output  reg       m_axis_tvalid,
-    output  reg[7:0]  m_axis_tuser,
-    input             m_axis_tready,
-        input  [1:0] diff
+    input   aclk,
+    input   arstn,
+    input   parity_set, //0:ou, 1:ji
+    output reg  [15:0]  m_axis_tdata,
+    output reg          m_axis_tvalid,
+    output reg  [7:0]   m_axis_tuser,
+    input               m_axis_tready,
+    input       [1:0]   diff
   );
   
     localparam integer base_1553_clock_rate = 1000000;
@@ -127,7 +128,7 @@ module axis_1553_decoder #(
               state <= data_cap;
             end
           end
-                  data_cap: begin
+          data_cap: begin
             state <= data_cap;
             
                                 if(trans_counter == 0) begin
@@ -147,27 +148,26 @@ module axis_1553_decoder #(
               cmd   <= 0;
             end
           end
-                  data_reduce: begin
+          data_reduce: begin
             state <= parity_gen;
             
-                      for(bit_slice_index = 0; bit_slice_index < 16; bit_slice_index = bit_slice_index + 1) begin
+            for(bit_slice_index = 0; bit_slice_index < 16; bit_slice_index = bit_slice_index + 1) begin
               data[bit_slice_index] <= (invert_data > 0 ? ~reg_data[bit_rate_per_mhz*(bit_slice_index+1)+round_bit_slice_offset] : reg_data[bit_rate_per_mhz*(bit_slice_index+1)+round_bit_slice_offset]);
             end
             
-                      parity_bit <= (invert_data > 0 ? ~reg_data[round_bit_slice_offset] : reg_data[round_bit_slice_offset]);
-            
-                      cmd[1] <= (invert_data > 0 ? 1'b1 : 1'b0);
-            
-                      cmd[2] <= delay_bit;
+            parity_bit <= (invert_data > 0 ? ~reg_data[round_bit_slice_offset] : reg_data[round_bit_slice_offset]);
+  
+            cmd[1] <= (invert_data > 0 ? 1'b1 : 1'b0);
+  
+            cmd[2] <= delay_bit;
           end
-                  parity_gen: begin
+          parity_gen: begin
             state <= trans;
-            
-                      cmd[0] <= ~(~(^data) ^ parity_bit);
+            cmd[0] <= ~(~(^data) ^ parity_bit ^ parity_set);
           end
-                  trans:
+          trans:
             state <= diff_wait;
-                  default:
+          default:
             state <= diff_wait;
         endcase
       end

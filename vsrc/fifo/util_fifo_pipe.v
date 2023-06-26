@@ -129,7 +129,8 @@ module util_fifo_pipe #(
         reg_rd_empty[0] <= rd_empty;
         
         //synth eliminates null vectors
-        for(index = 0; index < RD_SYNC_DEPTH; index = index + 1) begin
+        //r: zxp, fix bug index 0-->1
+        for(index = 1; index < RD_SYNC_DEPTH; index = index + 1) begin
           reg_rd_valid[index] <= reg_rd_valid[index-1];
           reg_rd_data[index]  <= reg_rd_data[index-1];
           reg_rd_empty[index] <= reg_rd_empty[index-1];
@@ -159,7 +160,8 @@ module util_fifo_pipe #(
         reg_wr_full[0]  <= wr_full;
         
         //synth eliminates null vectors
-        for(index = 0; index < WR_SYNC_DEPTH; index = index + 1) begin
+        //r: zxp, fix bug index 0-->1
+        for(index = 1; index < WR_SYNC_DEPTH; index = index + 1) begin
           reg_wr_ack[index] <= reg_wr_ack[index-1];
           reg_wr_data[index]  <= reg_wr_data[index-1];
           reg_wr_full[index] <= reg_wr_full[index-1];
@@ -179,8 +181,9 @@ module util_fifo_pipe #(
         end
       end else begin
         reg_data_count[0] <= data_count;
-        
-        for(index = 0; index < WR_SYNC_DEPTH; index = index + 1) begin
+
+        //r: zxp, fix bug index 0-->1
+        for(index = 1; index < WR_SYNC_DEPTH; index = index + 1) begin
           reg_data_count[index] <= reg_data_count[index-1];
         end
       end
