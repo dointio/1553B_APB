@@ -16,10 +16,10 @@ vlog ../vtb/tb_1553_apb.v
 vlog ../vsrc/1553B/Core_1553B.v
 vlog ../vsrc/1553B/Top_1553B_APB.v
 vlog ../vsrc/APBCores/APB_Slave_Interface.v +incdir+../vsrc/inc
-vlog ../vsrc/utils/fifo_simple.v
-vlog ../vsrc/utils/reg_en.v
-vlog ../vsrc/utils/reg_enrs.v
-vlog ../vsrc/utils/reg_rs.v
+vlog ../vsrc/utilsM/vlog/fifo_simple.v
+vlog ../vsrc/utilsM/vlog/reg_en.v
+vlog ../vsrc/utilsM/vlog/reg_enrs.v
+vlog ../vsrc/utilsM/vlog/reg_rs.v
 vlog ../vsrc/axis_1553_decoder.v
 vlog ../vsrc/axis_1553_encoder.v
 
@@ -31,5 +31,5 @@ vsim -voptargs=+acc work.tb_1553_apb
 ################################# add wave #############################################
 add wave *
 ################################ run ###################################################
-run 1us
+run 5us
 

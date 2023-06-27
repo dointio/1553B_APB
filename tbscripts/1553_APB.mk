@@ -18,10 +18,10 @@ RTL_LIST_VLOG := \
 				../vsrc/1553B/Core_1553B.v \
 				../vsrc/1553B/Top_1553B_APB.v \
 				../vsrc/APBCores/APB_Slave_Interface.v \
-				../vsrc/utils/fifo_simple.v \
-				../vsrc/utils/reg_en.v \
-				../vsrc/utils/reg_enrs.v \
-				../vsrc/utils/reg_rs.v \
+				../vsrc/utilsM/vlog/fifo_simple.v \
+				../vsrc/utilsM/vlog/reg_en.v \
+				../vsrc/utilsM/vlog/reg_enrs.v \
+				../vsrc/utilsM/vlog/reg_rs.v \
 				../vsrc/axis_1553_decoder.v \
 				../vsrc/axis_1553_encoder.v
 
