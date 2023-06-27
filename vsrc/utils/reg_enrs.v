@@ -9,8 +9,6 @@ module reg_enrs #(
     input [DW-1:0] data_i,
     output reg [DW-1:0] data_o
 );
-`include "mydefines.v"
-
     always @(posedge clk) begin
         if (~rst_n) data_o <= RESET_VAL;
         else if (en) data_o <= data_i;

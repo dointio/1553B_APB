@@ -40,11 +40,11 @@ input                               APB_WRITE;
 input  [DATAWIDTH-1 : 0]            APB_WDATA;
 input                               APB_SEL;
 
-input     rx0_1553;
-output    tx0_1553;
+input     [1:0] rx0_1553;
+output    [1:0] tx0_1553;
 output    tx0_en;
-input     rx1_1553;
-output    tx1_1553;
+input     [1:0] rx1_1553;
+output    [1:0] tx1_1553;
 output    tx1_en;
 
 wire [DATAWIDTH*REGSNUM-1 : 0]    RegsDataOut;
@@ -68,7 +68,7 @@ APB_Slave_Interface#(
     // parameter INITIAL_FILE = "blank",
     // parameter FaultInjectFile = "blank"
     .DATAWIDTH  (DATAWIDTH),
-    .REGSNUM    (REGSNUM),
+    .REGSNUM    (REGSNUM)
 )APB_Inter_inst(
     .APB_CLK(APB_CLK),
     .APB_RESETn(APB_RESETn),

@@ -1,5 +1,3 @@
-`include "mydefines.v"
-
 module reg_rs #(
     parameter DW = 1, 
     parameter RESET_VAL = 0//,

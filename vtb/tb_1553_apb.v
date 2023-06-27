@@ -1,93 +1,52 @@
+`timescale 1ns/100ps
 module tb_1553_apb ();
+
+localparam DATAWIDTH = 32;
+localparam APB_STRB_WIDTH = 8;
+localparam REGSNUM = 8;
+localparam REGS_ADDRWIDTH = 3;
+
+localparam clk_cycle = 20;
 
 reg writeStart;
 reg readStart;
 reg [31:0] writeData;
 reg [31:0] addr;
 
+
+task writeData_t;
+  input [DATAWIDTH-1:0] addr_i;
+  input [DATAWIDTH-1:0] data_i;
+begin
+  writeData = data_i;
+  addr = addr_i;
+  writeStart = 1;
+  #clk_cycle
+  writeStart = 0;
+end
+endtask
+
+task readData_t;
+  input [DATAWIDTH-1:0] addr_i;
+begin
+  readStart = 1;
+  addr = addr_i;
+  #clk_cycle
+  readStart = 0;
+end
+endtask
+
 initial begin
     writeStart = 0;
     readStart = 0;
     writeData = 0;
     addr = 0;
-    #400
-    writeData = 32'h114;
-    addr = 32'h26;
-    writeStart = 1;
-    #20
-    writeStart = 0;
-    #200
-    writeData = 32'h124;
-    addr = 32'h12a;
-    writeStart = 1;
-    #20
-    writeStart = 0;
-    #200
-    writeData = 32'h134;
-    addr = 32'h216;
-    writeStart = 1;
-    #20
-    writeStart = 0;
-    #200
-    writeData = 32'h154;
-    addr = 32'h420;
-    writeStart = 1;
-    #20
-    writeStart = 0;
-    #200
-    writeData = 32'h164;
-    addr = 32'h520;
-    writeStart = 1;
-    #20
-    writeStart = 0;
-    #200
-    writeData = 32'h174;
-    addr = 32'h620;
-    writeStart = 1;
-    #20
-    writeStart = 0;
-    #200
-    writeData = 32'h184;
-    addr = 32'h720;
-    writeStart = 1;
-    #20
-    writeStart = 0;
-
-    #200
-    addr = 32'h26;
-    readStart = 1;
-    #20
-    readStart = 0;
-    #200
-    addr = 32'h12a;
-    readStart = 1;
-    #20
-    readStart = 0;
-    #200
-    addr = 32'h216;
-    readStart = 1;
-    #20
-    readStart = 0;
-    #200
-    addr = 32'h420;
-    readStart = 1;
-    #20
-    readStart = 0;
-    #200
-    addr = 32'h520;
-    readStart = 1;
-    #20
-    readStart = 0;
-    #200
-    addr = 32'h620;
-    readStart = 1;
-    #20
-    readStart = 0;
-    #200
-    addr = 32'h720;
-    readStart = 1;
-    #20
-    readStart = 0;
+    #(clk_cycle*30);
+    writeData_t((3<<2),32'h0010ab);
+    #900
+    writeData_t((3<<2),32'h00aaaa);
+    #900
+    writeData_t((3<<2),32'h00ddad);
 end
 
 
@@ -109,7 +68,7 @@ reg                             APB_SEL;
 initial begin
     APB_CLK = 1;
     forever begin
-        #20 APB_CLK = ~APB_CLK;
+        #(clk_cycle/2) APB_CLK = ~APB_CLK;
     end
 end
 
@@ -135,6 +94,8 @@ begin
     else begin
         if(waitRdy) begin
             if(APB_READY) begin
+                APB_SEL <= 0;
+                APB_ENABLE <= 0;
                 waitRdy <= 0;
             end
         end
@@ -170,5 +131,36 @@ begin
         end
     end
 end
+
+wire [1:0] rx0_1553;
+wire [1:0] tx0_1553;
+wire tx0_en;
+wire [1:0] rx1_1553;
+wire [1:0] tx1_1553;
+wire tx1_en;
+
+Top_1553B_APB top_inst
+(
+  .APB_CLK(APB_CLK),
+  .APB_RESETn(APB_RESETn),
+  .APB_RDATA(APB_RDATA),
+  .APB_READY(APB_READY),
+  .APB_SLVERR(APB_SLVERR),
+  .APB_STRB(APB_STRB),
+  .APB_PROT(APB_PROT), 
+  .APB_ADDR   (APB_ADDR),
+  .APB_ENABLE (APB_ENABLE),
+  .APB_WRITE  (APB_WRITE),
+
+  .APB_WDATA(APB_WDATA),
+  .APB_SEL  (APB_SEL),
+
+  .rx0_1553 (rx0_1553),
+  .tx0_1553 (tx0_1553),
+  .tx0_en   (tx0_en),
+  .rx1_1553 (rx1_1553),
+  .tx1_1553 (tx1_1553),
+  .tx1_en   (tx1_en)
+);
 
 endmodule

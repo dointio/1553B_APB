@@ -1,0 +1,3 @@
+[submodule "vsrc/utilsM"]
+	path = vsrc/utilsM
+	url = https://github.com/dointio/utilsM.git

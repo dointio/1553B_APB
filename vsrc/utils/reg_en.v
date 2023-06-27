@@ -7,8 +7,6 @@ module reg_en #(
     input [DW-1:0] data_i,
     output reg [DW-1:0] data_o
 );
-`include "mydefines.v"
-
     always @(posedge clk) begin
         if(en == 1'b1)
             data_o <= data_i;

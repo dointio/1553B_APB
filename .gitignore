@@ -1,3 +1,6 @@
 /.history*
 /.vscode*
 /obj_dir*
+/work*
+modelsim.ini
+transcript

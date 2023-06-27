@@ -30,13 +30,7 @@ wire          m1553_encoder_ready;
 //fifo port
 
 
-axis_1553_decoder #(
-  .clock_speed(clock_speed),
-  .sample_rate(mil1553_sample_rate),
-  .bit_slice_offset(mil1553_rx_bit_slice_offset),
-  .invert_data(mil1553_rx_invert_data),
-  .sample_select(mil1553_rx_sample_select)
-) mil1553_decoder (
+axis_1553_decoder mil1553_decoder (
   //clock and reset
   .aclk(clk),
   .arstn(rst_n),
@@ -69,13 +63,10 @@ fifo_simple #(
   .data_o     (r_fifo_data)
 );
 
-axis_1553_encoder #(
-  .clock_speed(clock_speed),
-  .sample_rate(mil1553_sample_rate)
-) mil1553_encoder (
+axis_1553_encoder mil1553_encoder (
   //clock and reset
-  .aclk(aclk),
-  .arstn(arstn),
+  .aclk(clk),
+  .arstn(rst_n),
 
   .parity_set   (parity_set),
   //slave input
